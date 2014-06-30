@@ -97,6 +97,8 @@ describe Snils do
     it 'calculates valid checksum even for incomplete snils' do
       snils = described_class.new('188299822')
       expect(snils.checksum).to eq('50')
+      snils = described_class.new('563-725-063')
+      expect(snils.checksum).to eq('00')
     end
 
   end

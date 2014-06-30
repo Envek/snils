@@ -22,14 +22,10 @@ class Snils
     checksum = digits.each.with_index.inject(0) do |sum, (digit, index)|
       sum + digit * (9 - index)
     end
-    checksum = case
-                 when (100..101).cover?(checksum)
-                   0
-                 when checksum > 101
-                   checksum % 101
-                 else
-                   checksum
-               end
+    while checksum > 101 do
+      checksum = checksum % 101
+    end
+    checksum = 0  if (100..101).include?(checksum)
     '%02d' % checksum
   end
 
@@ -63,7 +59,7 @@ class Snils
 
   # Generates new random valid SNILS
   def self.generate
-    digits = Array.new(9).map{ rand (0..9) }.join
+    digits = Array.new(9).map{ rand(10) }.join
     sum = self.new(digits).checksum
     "#{digits}#{sum}"
   end
