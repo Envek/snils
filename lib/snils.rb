@@ -71,8 +71,8 @@ class Snils
   protected
 
   def validate
-    @errors << [:wrong_length, :count => 11]  unless @snils.length == 11
-    @errors << :invalid unless @snils[-2..-1] == self.checksum
+    @errors << [:wrong_length, {:count => 11}]  unless @snils.length == 11
+    @errors << :invalid  unless @snils[-2..-1] == self.checksum
     @validated = true
   end
 

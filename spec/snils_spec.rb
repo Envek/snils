@@ -68,12 +68,12 @@ describe Snils do
 
     it 'should not validate invalid snils (with wrong length)' do
       snils = described_class.new('963-117-158 080')
-      expect(snils.errors).to include [:wrong_length, :count => 11]
+      expect(snils.errors).to include [:wrong_length, {:count => 11}]
     end
 
     it 'should not validate invalid snils (with wrong length)' do
       snils = described_class.new('963-117-158')
-      expect(snils.errors).to include [:wrong_length, :count => 11]
+      expect(snils.errors).to include [:wrong_length, {:count => 11}]
     end
 
   end
