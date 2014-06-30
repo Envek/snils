@@ -66,6 +66,20 @@ class User < ActiveRecord::Base
 end
 ```
 
+Генерация СНИЛСов в фабриках для тестов:
+
+```ruby
+FactoryGirl.define do
+  sequence :snils do |_|
+    Snils.new.to_s
+  end
+
+  factory :user do
+    snils
+  end
+end
+```
+
 ## Помощь в разработке
 
 1. Сделайте форк проекта в своём github-аккаунте. ( https://github.com/Envek/snils/fork )
