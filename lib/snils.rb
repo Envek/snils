@@ -19,7 +19,7 @@ class Snils
   # Calculates checksum (last 2 digits) of a number
   def checksum
     digits = @snils.split('').take(9).map(&:to_i)
-    checksum = digits.each.with_index.inject(0) do |sum, (digit, index)|
+    checksum = digits.each.with_index.reduce(0) do |sum, (digit, index)|
       sum + digit * (9 - index)
     end
     while checksum > 101 do
@@ -59,7 +59,7 @@ class Snils
 
   # Generates new random valid SNILS
   def self.generate
-    digits = Array.new(9).map{ rand(10) }.join
+    digits = Array.new(9).map { rand(10) }.join
     sum = self.new(digits).checksum
     "#{digits}#{sum}"
   end
@@ -67,10 +67,9 @@ class Snils
   protected
 
   def validate
-    @errors << [:wrong_length, {:count => 11}]  unless @snils.length == 11
+    @errors << [:wrong_length, { :count => 11 }]  unless @snils.length == 11
     @errors << :invalid  unless @snils[-2..-1] == self.checksum
     @validated = true
   end
 
 end
-
