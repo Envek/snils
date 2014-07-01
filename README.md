@@ -100,7 +100,7 @@ end
       validates :snils, presence: true, uniqueness: true, snils: true
 
       def snils=(value)
-        Snils.new(value).raw
+        write_attribute(:snils, Snils.new(value).raw)
       end
     end
     ```
