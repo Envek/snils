@@ -46,25 +46,17 @@ Snils.new("216471647").errors
 
 Валидация в Ruby on Rails для атрибутов моделей:
 
-```ruby
-require 'snils'
+1. Измените Gemfile, чтобы он подключал `snils/rails`
 
-class User < ActiveRecord::Base
-  validates :snils, presence: true, uniqueness: true
-  validate  :snils_validation
-  
-  protected
-  
-  def snils_validation
-    validated_snils = Snils.new(snils)
-    unless validated_snils.valid?
-      validated_snils.errors.each do |error|
-        errors.add(:snils, *error)
-      end
-    end
-  end
-end
-```
+    ```ruby
+    gem 'snils', require: 'snils/rails'
+    ```
+
+ 2. Добавьте валидацию `:snils` к требуемым атрибутам
+
+    ```ruby
+    validates :snils, presence: true, uniqueness: true, snils: true
+    ```
 
 Генерация СНИЛСов в фабриках для тестов:
 
@@ -80,6 +72,37 @@ FactoryGirl.define do
 end
 ```
 
+### Рекомендуемый рабочий процесс для проектов на Ruby on Rails
+
+ 1. Используйте [draper], чтобы форматировать СНИЛС для отображения
+
+    ```ruby
+    # app/decorators/user_decorator.rb
+    class UserDecorator < Draper::Decorator
+      delegate_all
+
+      def snils
+        @formatted_snils ||= Snils.new(object.snils).formatted  if object.snils
+      end
+    end
+    ```
+
+ 2. Очищайте СНИЛС при записи в атрибут модели
+
+    ```ruby
+    # app/models/user.rb
+    class User < ActiveRecord::Base
+      validates :snils, presence: true, uniqueness: true, snils: true
+
+      def snils=(value)
+        Snils.new(value).raw
+      end
+    end
+    ```
+
+С такой настройкой вы всегда будете хранить в БД значение, состоящее только из цифр, а пользователю всегда будете отображать красиво форматированный СНИЛС.
+
+
 ## Помощь в разработке
 
 1. Сделайте форк проекта в своём github-аккаунте. ( https://github.com/Envek/snils/fork )
@@ -88,4 +111,5 @@ end
 4. Запушьте изменения (`git push origin my-new-feature`)
 5. Создайте новый Pull Request
 
+[draper]: https://github.com/drapergem/draper
 [СНИЛС]: http://ru.wikipedia.org/wiki/%D0%A1%D1%82%D1%80%D0%B0%D1%85%D0%BE%D0%B2%D0%BE%D0%B9_%D0%BD%D0%BE%D0%BC%D0%B5%D1%80_%D0%B8%D0%BD%D0%B4%D0%B8%D0%B2%D0%B8%D0%B4%D1%83%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D0%B3%D0%BE_%D0%BB%D0%B8%D1%86%D0%B5%D0%B2%D0%BE%D0%B3%D0%BE_%D1%81%D1%87%D1%91%D1%82%D0%B0

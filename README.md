@@ -51,25 +51,17 @@ Snils.new("216471647").errors
 
 Validating Rails model attributes:
 
-```ruby
-require 'snils'
+ 1. Modify your gemfile to require `snils/rails`
 
-class User < ActiveRecord::Base
-  validates :snils, presence: true, uniqueness: true
-  validate  :snils_validation
-  
-  protected
-  
-  def snils_validation
-    validated_snils = Snils.new(snils)
-    unless validated_snils.valid?
-      validated_snils.errors.each do |error|
-        errors.add(:snils, *error)
-      end
-    end
-  end
-end
-```
+    ```ruby
+    gem 'snils', require: 'snils/rails'
+    ```
+
+ 2. Add `:snils` validation to SNILS attributes
+
+    ```ruby
+    validates :snils, presence: true, uniqueness: true, snils: true
+    ```
 
 Generating SNILSes in factories for tests:
 
@@ -85,6 +77,37 @@ FactoryGirl.define do
 end
 ```
 
+### Recommended workflow for Ruby on Rails projects
+
+ 1. Use [draper] gem to format SNILS for views
+
+    ```ruby
+    # app/decorators/user_decorator.rb
+    class UserDecorator < Draper::Decorator
+      delegate_all
+
+      def snils
+        @formatted_snils ||= Snils.new(object.snils).formatted
+      end
+    end
+    ```
+
+ 2. Sanitize SNILSes on attribute write
+
+    ```ruby
+    # app/models/user.rb
+    class User < ActiveRecord::Base
+      validates :snils, presence: true, uniqueness: true, snils: true
+
+      def snils=(value)
+        Snils.new(value).raw
+      end
+    end
+    ```
+
+With this setup you will always store raw (only digits) value in database and always will show pretty formatted SNILS to users.
+
+
 ## Contributing
 
 1. Fork it ( https://github.com/Envek/snils/fork )
@@ -93,4 +116,5 @@ end
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
 
+[draper]: https://github.com/drapergem/draper
 [SNILS]: http://en.wikipedia.org/wiki/SNILS_(Russia) "Insurance individual account number"
