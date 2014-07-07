@@ -67,8 +67,13 @@ Generating SNILSes in factories for tests:
 
 ```ruby
 FactoryGirl.define do
+  # You can generate random valid SNILSes
   sequence :snils do |_|
-    Snils.new.to_s
+    Snils.generate
+  end
+  # Or sequenced ones
+  sequence :snils do |counter|
+    Snils.generate(counter)
   end
 
   factory :user do

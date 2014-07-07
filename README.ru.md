@@ -62,8 +62,13 @@ Snils.new("216471647").errors
 
 ```ruby
 FactoryGirl.define do
+  # Вы можете генерировать случайные корректные СНИЛСы
   sequence :snils do |_|
-    Snils.new.to_s
+    Snils.generate
+  end
+  # Или последовательные
+  sequence :snils do |counter|
+    Snils.generate(counter)
   end
 
   factory :user do

@@ -58,8 +58,11 @@ class Snils
   end
 
   # Generates new random valid SNILS
-  def self.generate
-    digits = Array.new(9).map { rand(10) }.join
+  #
+  # if you'll provide +num+, it will be used as a base for new SNILS,
+  # checksum will be calculated automatically.
+  def self.generate(num = nil)
+    digits = num.nil? ? Array.new(9).map { rand(10) }.join : ('%09d' % num)
     sum = self.new(digits).checksum
     "#{digits}#{sum}"
   end
