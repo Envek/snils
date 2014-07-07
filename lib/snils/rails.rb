@@ -12,8 +12,12 @@ require 'snils'
 #
 #    validates :snils, presence: true, uniqueness: true, snils: true
 #
+# Be aware of fact, that this validation doesn't require the value presence,
+# use <tt>presence: true</tt> to require SNILS to be present.
+#
 class SnilsValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
+    return  if value.blank?
     snils = Snils.new(value)
     if snils.errors.any? && options[:message]
       record.errors.add(attribute, options[:message])
