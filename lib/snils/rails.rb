@@ -16,6 +16,8 @@ require 'snils'
 # use <tt>presence: true</tt> to require SNILS to be present.
 #
 class SnilsValidator < ActiveModel::EachValidator
+  # Validates each attribute to be a SNILS:
+  # have 11 digits in itself (punctuation doesn't count) and have valid checksum
   def validate_each(record, attribute, value)
     return  if value.blank?
     snils = Snils.new(value)

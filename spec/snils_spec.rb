@@ -18,7 +18,7 @@ describe Snils do
     end
 
     it 'should initialize with numeric snils' do
-      snils = described_class.new(96311715808)
+      snils = described_class.new(963_117_158_08)
       expect(snils.raw).to eq('96311715808')
     end
 

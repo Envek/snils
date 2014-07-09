@@ -3,6 +3,7 @@ SNILS
 
 [![Gem Version](https://badge.fury.io/rb/snils.svg)](http://badge.fury.io/rb/snils)
 [![Continuous Integration status](https://api.travis-ci.org/Envek/snils.svg)](http://travis-ci.org/Envek/snils)
+[![PullReview stats](https://www.pullreview.com/github/Envek/snils/badges/master.svg?)](https://www.pullreview.com/github/Envek/snils/reviews/master)
 
 Generating, validating and formatting [SNILS] number (Russian pension insurance individual account number).
 
